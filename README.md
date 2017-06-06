@@ -22,7 +22,7 @@ A cryptocurrency portfolio value calculator
    5. Save the script with the id and amounts in your portfolio (make sure this is correct JSON!).
    6. Execute the script for the current market value. You can execute the script by right clicking in Windows and selecting: "Run with PowerShell".
    7. See output
-![example image](http://i.imgur.com/K7GZ1e1.jpg "An exemplary image")
+![example image](http://i.imgur.com/b147EKF.jpg "An exemplary image")
 
 ## How To Be Lazy
 For added convience, create a shortcut to the script and add it to your taskbar. This way you can just click once and see the value of your portfolio at any time. The target of the shortcut would be something like: 
