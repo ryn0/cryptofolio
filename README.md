@@ -5,7 +5,7 @@ A cryptocurrency portfolio value calculator
 
 ## How To Use
 
-  1. Download the script: crypto_value.ps1 (you could just copy and paste the contents to a text file and save as .ps1 if you want).
+  1. Download the script: crypto_value.ps1 from this git repository (you could just copy and paste the contents to a text file and save as .ps1 if you want).
   2. Open the script in a text editor like notepad or the PowerShell ISE.
   3. Find the id's of the currencies you have by looking at the JSON here: [coinmarketcap.com/v1/ticker](https://api.coinmarketcap.com/v1/ticker/)
   4. Edit the JSON in the script and set your own currency/ value pairings, for example: 
