@@ -16,10 +16,10 @@ function Calculate-Portfolio ($holdingsJson)
     $format = "{0,-12} {1,15} {2,10} {3,5} {4,15} {5,25}"
 
     $format -f `
-        "Coin name", "Amount in USD", "Percentage", "Symbol", "USD","Amount"
+        "Coin name", "Amount in USD", "Percentage", "Symbol", "USD for Each","Amount"
 
     $format -f `
-        "---------", "-------------", "----------", "------", "---", "-----"
+        "---------", "-------------", "----------", "------", "------------", "-----"
              
     $totalUsd = 0
 
