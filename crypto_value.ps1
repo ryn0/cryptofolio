@@ -8,7 +8,6 @@
     ]}'
 
 
-
 function Calculate-Portfolio ($holdingsJson) 
 {
     $heldAmounts = (ConvertFrom-Json -InputObject $holdingsJson)    
@@ -49,10 +48,10 @@ function Calculate-Portfolio ($holdingsJson)
         $heldValue = ($currentPriceUsd * $holding.amount)
         
         $formattedValue = "{0:C2}" -f $heldValue
-        $percentage =  [math]::Round(( ($heldValue / $totalUsd) * 100),2)
+        $percentage =  [math]::Round(( ($heldValue / $totalUsd) * 100),3)
          
         $format -f `
-            $item.id, $formattedValue, "$percentage%", $item.symbol, ("{0:C2}" -f $currentPriceUsd), ($holding.amount)
+            $item.id, $formattedValue, "$percentage%", $item.symbol, ("{0:C4}" -f $currentPriceUsd), ($holding.amount)
     }
 
 
