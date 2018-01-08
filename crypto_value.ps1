@@ -8,19 +8,21 @@
     ]}'
 
 
+
 function Calculate-Portfolio ($holdingsJson) 
 {
     $heldAmounts = (ConvertFrom-Json -InputObject $holdingsJson)    
 
-    $format = "{0,-12} {1,15} {2,10} {3,5} {4,15} {5,25}"
+    $format = "{0,-12} {1,15} {2,15} {3,15} {4,5} {5,15} {6,17}"
 
     $format -f `
-        "Coin name", "Amount in USD", "Percentage", "Symbol", "USD for Each","Amount"
+        "Coin name", "Amount in USD", "Amount in BTC", "Percentage USD", "Symbol", "USD for Each","Quantity"
 
     $format -f `
-        "---------", "-------------", "----------", "------", "------------", "-----"
+        "---------", "-------------", "-------------", "--------------",     "------","------------",    "--------"
              
     $totalUsd = 0
+    $totalBtc = 0
 
     $Array = New-Object System.Collections.ArrayList
 
@@ -32,31 +34,39 @@ function Calculate-Portfolio ($holdingsJson)
         $currentDetails = (ConvertFrom-Json -InputObject $response)  
     
         $currentPriceUsd = [Convert]::ToDecimal($currentDetails.price_usd)
+        $heldValueUsd = ($currentPriceUsd * $holding.amount)
+        $totalUsd = $totalUsd + $heldValueUsd
 
-        $heldValue = ($currentPriceUsd * $holding.amount)
-        
-        $totalUsd = $totalUsd + $heldValue
+        $currentPriceBtc = [Convert]::ToDecimal($currentDetails.price_btc)
+        $heldValueBtc = ($currentPriceBtc * $holding.amount)
+        $totalBtc = $totalBtc + $heldValueBtc
 
         $Array.Add($currentDetails) | out-null
     } 
      
     foreach($item in $Array)
     {  
-        $currentPriceUsd = [Convert]::ToDecimal($item.price_usd)
-       
         $holding = $heldAmounts.cryptoPortfolio | where {   $_.id -eq $item.id }
-        $heldValue = ($currentPriceUsd * $holding.amount)
-        
-        $formattedValue = "{0:C2}" -f $heldValue
-        $percentage =  [math]::Round(( ($heldValue / $totalUsd) * 100),3)
+
+        $currentPriceUsd = [Convert]::ToDecimal($item.price_usd)      
+        $heldValueUsd = ($currentPriceUsd * $holding.amount)        
+        $formattedValueUsd = "{0:C2}" -f $heldValueUsd
+        $percentageUsd =  [math]::Round(( ($heldValueUsd / $totalUsd) * 100),3)
+
+        $currentPriceBtc = [Convert]::ToDecimal($item.price_btc)      
+        $heldValueBtc = ($currentPriceBtc * $holding.amount)        
+        $formattedValueBtc = $heldValueBtc.ToString("#.########")
+        $percentageBtc =  [math]::Round(( ($heldValueBtc / $totalBtc) * 100),3)
+ 
          
         $format -f `
-            $item.id, $formattedValue, "$percentage%", $item.symbol, ("{0:C4}" -f $currentPriceUsd), ($holding.amount)
+            $item.id, $formattedValueUsd, $formattedValueBtc, "$percentageUsd%", $item.symbol, ("{0:C4}" -f $currentPriceUsd), ($holding.amount)
     }
 
 
     Write-Host "--------------"
-    Write-Host "Total:"  ("{0:C2}" -f $totalUsd)
+    Write-Host "Total USD:"  ("{0:C2}" -f $totalUsd)
+    Write-Host "Total BTC:" $totalBtc.ToString("#.########")
     Write-Host "--------------"
     
     Read-Host
